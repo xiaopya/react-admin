@@ -27,7 +27,7 @@ export async function getInitialState() {
   };
   // 如果是登录页面，不执行
   if (history.location.pathname !== loginPath) {
-    const v: string | null = localStorage.getItem('username');
+    const v: string | null = sessionStorage.getItem('username');
     if (v) {
       const user = JSON.parse(v);
       const currentUser = await fetchUserInfo(user.currentUser.name);
@@ -50,7 +50,7 @@ export const layout = ({ initialState, setInitialState }: {
   setInitialState: any;
 }) => {
   if (!initialState?.currentUser?.length) {
-    const vals: string | null = localStorage.getItem('username');
+    const vals: string | null = sessionStorage.getItem('username');
     if (vals) {
       const user = JSON.parse(vals);
       initialState.currentUser = user.currentUser;

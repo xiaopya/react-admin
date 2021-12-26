@@ -1,10 +1,11 @@
 ﻿export default [
   {
-    path: '/user',
+    path: '/user/login',
+    exact: true,
     layout: false,
     routes: [
       {
-        path: '/user',
+        path: '/user/login',
         routes: [
           {
             name: 'login',
@@ -14,13 +15,13 @@
         ],
       },
       {
-        component: './404',
+        component: '@/pages/Access_Error/404',
       },
     ],
   },
   {
-    path: '/',
-    name: 'home',
+    path: '/home',
+    name: '首页',
     icon: 'crown',
     component: '@/pages/Home',
     // routes: [
@@ -40,6 +41,6 @@
     redirect: '/home',
   },
   {
-    component: './404',
+    component: '@/pages/Access_Error/404',
   },
 ];
