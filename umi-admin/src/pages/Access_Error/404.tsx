@@ -5,38 +5,6 @@ import { history } from 'umi';
 
 const NoFoundPage: React.FC = () => (
   <>
-    <div className="container container-star">
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-      <div className="star-1"></div>
-    </div>
     <div className="container container-bird">
       <div className="bird bird-anim">
         <div className="bird-container">
