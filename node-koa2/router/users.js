@@ -2,8 +2,6 @@ const Router = require('koa-router');
 const user = new Router();
 const db = require('../utils/db');
 
-// 根目录
-
 user.post('/user/login',async ctx=>{
 
     const {username,password} = ctx.request.body;
@@ -43,6 +41,7 @@ user.post('/user/login',async ctx=>{
 })
 
 
+// 请求 该用户 的 个人信息
 user.post('/user/currentUser', async ctx=>{
     const {username} = ctx.request.body;
     const data = await new Promise((rev,reg)=>{
@@ -57,8 +56,19 @@ user.post('/user/currentUser', async ctx=>{
             msg: '',
             code: 200,
             status: 'ok',
-            data,
+            data: data[0],
         }
+    }
+})
+
+// 用户退出
+user.get('/user/outLogin', async ctx=>{
+    ctx.body = {
+        msg: '用户退出成功',
+        code: 200,
+        status: 'ok',
+        data: [],
+        success: true,
     }
 })
 
