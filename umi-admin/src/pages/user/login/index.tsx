@@ -26,6 +26,7 @@ const Login: React.FC = () => {
 
     const fetchUserInfo = async (msg: { username: any; }) => {
         const userInfo = await initialState?.fetchUserInfo?.(msg.username);
+        console.log(userInfo,'userInfouserInfouserInfo')
         if (userInfo) {
             await setInitialState((v: {}) => ({ ...v, currentUser: userInfo, }));
         }
@@ -35,11 +36,10 @@ const Login: React.FC = () => {
         try {
             // 登录
             const msgs = await login({ ...values });
-            console.log(msgs, 'msgs')
             if (msgs.status === 'ok') {
                 message.success("登录成功");
-                sessionStorage.setItem("All_token", JSON.stringify(msgs));
-                await fetchUserInfo(msgs);
+                sessionStorage.setItem("All_token", JSON.stringify(msgs.data));
+                await fetchUserInfo(msgs.data);
                 history.push('/');
                 return;
             }
