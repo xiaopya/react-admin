@@ -26,6 +26,12 @@ export default [
         icon: 'home',
     },
     {
+        name: '个人资料',
+        path: '/personaldata',
+        component: '@/pages/PersonalData',
+        icon: 'home',
+    },
+    {
         path: '/',
         redirect: '/home',
     },

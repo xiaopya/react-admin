@@ -5,7 +5,7 @@ import {
 import { PageLoading } from '@ant-design/pro-layout';
 import { history } from 'umi';
 import RightContent from '@/components/RightContent'
-import { currentUser as queryCurrentUser,checkToken } from './services/api';
+import { currentUser as queryCurrentUser, checkToken } from './services/api';
 
 const loginPath = '/user/login'
 
@@ -18,7 +18,7 @@ export async function getInitialState(): Promise<API.IUser> {
   const user_token: any = sessionStorage.getItem('All_token');
   const fetchUserInfo = async (users: string) => {
     try {
-      if(users){
+      if (users) {
         const msg = await queryCurrentUser(users);
         return msg.data;
       }
@@ -27,17 +27,17 @@ export async function getInitialState(): Promise<API.IUser> {
     }
     return undefined;
   };
-  
+
   // 检验 token 是否过期 如果过期 让他 回到登陆页面 
-  const vefToken = async ()=>{
-      if(user_token){
-        const tokenInfo = JSON.parse(user_token);
-        const msg =  await checkToken(tokenInfo);
-        if(msg.status === 401){
-            sessionStorage.removeItem("All_token");
-            history.push('/user/login');
-        }
+  const vefToken = async () => {
+    if (user_token) {
+      const tokenInfo = JSON.parse(user_token);
+      const msg = await checkToken(tokenInfo);
+      if (msg.status === 401) {
+        sessionStorage.removeItem("All_token");
+        history.push('/user/login');
       }
+    }
   }
 
   // 如果是登录页面，不执行

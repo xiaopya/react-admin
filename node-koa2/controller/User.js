@@ -2,7 +2,6 @@ const db = require('../utils/db');
 const { JWT } = require('../utils/jwt');
 
 class userController {
-
     /**
      * 用户登录
      */
@@ -56,12 +55,23 @@ class userController {
                 rev(data);
             })
         })
-        if (data) {
+        //  如果该用户 有 个人资料信息则返回 没有则返回username 和 默认 头像
+        if (data.length) {
             ctx.body = {
                 msg: '',
                 code: 200,
                 status: 'ok',
                 data: data[0],
+            }
+        }else{
+            ctx.body = {
+                msg: '',
+                code: 200,
+                status: 'ok',
+                data: {
+                    name: username,
+                    avatar: 'https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif',
+                },
             }
         }
     }
