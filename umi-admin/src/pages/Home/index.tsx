@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styles from './style.less';
 import useTypewriter from 'react-typewriter-hook';
+import { useModel } from 'umi';
 
-interface IAppProps {}
+interface IAppProps { }
 
-const Banner_Parallax: React.FunctionComponent<IAppProps> = (props) => {
-  const talk = useTypewriter('Miànxiàng xīngkōng biānchéng🎉...');
+const Banner_Parallax: React.FunctionComponent<IAppProps> = memo((props) => {
+
+  const { initialState: { currentUser: { saying } } } = useModel<any>('@@initialState');
+
+  const talk = useTypewriter(saying || 'Miànxiàng xīngkōng biānchéng🎉...');
+
   return (
     <div className={styles.wrap_css_doodle}>
       <div className={styles.svg_block}>
@@ -80,6 +85,6 @@ const Banner_Parallax: React.FunctionComponent<IAppProps> = (props) => {
       <span className={styles.span_writer}>{talk}</span>
     </div>
   );
-};
+});
 
 export default Banner_Parallax;

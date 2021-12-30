@@ -14,7 +14,7 @@ export async function currentUser(body: string) {
 * 退出登录接口 POST /api/user/outLogin  
 */
 export async function outLogin() {
-  return request<Record<string, any>>('/api/user/outLogin', {
+  return request('/api/user/outLogin', {
     method: 'GET',
   });
 }
@@ -40,5 +40,19 @@ export async function checkToken(body: { token: string, }) {
       'authorization': body.token,
       'Content-Type': 'application/json',
     },
+  });
+}
+
+
+/** 
+ * 检验token POST /api/user/checkToken
+ * */
+export async function userInfo(body: any) {
+  return request('/api/user/userInfo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
   });
 }

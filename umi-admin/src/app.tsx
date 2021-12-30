@@ -3,7 +3,7 @@ import {
   Settings as LayoutSettings,
 } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 import RightContent from '@/components/RightContent'
 import { currentUser as queryCurrentUser, checkToken } from './services/api';
 
@@ -15,6 +15,7 @@ export const initialStateConfig = {
 };
 
 export async function getInitialState(): Promise<API.IUser> {
+
   const user_token: any = sessionStorage.getItem('All_token');
   const fetchUserInfo = async (users: string) => {
     try {

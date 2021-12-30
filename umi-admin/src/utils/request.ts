@@ -42,7 +42,7 @@ const request = extend({
   credentials: 'include', // 默认请求是否带上cookie
 });
 
-// // request拦截器, 改变url 或 options.
+// request拦截器, 改变url 或 options.
 // request.interceptors.request.use(async (url, options) => {
 //   let c_token = localStorage.getItem('x-auth-token');
 //   if (c_token) {
@@ -56,15 +56,10 @@ const request = extend({
 //       options: { ...options, headers: headers },
 //     };
 //   } else {
-//     const headers = {
-//       'Content-Type': 'application/json',
-//       Accept: 'application/json',
-//       'x-auth-token': c_token,
-//     };
 //     return {
 //       url: url,
 //       options: { ...options },
-//     };
+//     };console.log()
 //   }
 // });
 

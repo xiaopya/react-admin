@@ -1,28 +1,40 @@
 import { Form, Upload, Row, Col, Card, Input, message, Button, Space } from 'antd';
 import { useState } from 'react';
 import ImgCrop from 'antd-img-crop';
-
+import { userInfo } from '@/services/api';
+import { useModel } from 'umi';
+// import CreateModal from '@/utils/model'
 
 const Personal = () => {
+    const { initialState } = useModel<any>('@@initialState');
+    const name = sessionStorage.getItem('All_token');
     // 头像
     const [fileList, setFileList] = useState<never[]>([]);
     const [form] = Form.useForm();
 
     // 表单提交数据
-    const onFinish = (vals: {}) => {
-        console.log(vals, 'vals...')
-        message.success('Submit success!');
+    const onFinish = async (vals: {}) => {
+        if (name) {
+            const n = JSON.parse(name);
+            const data = await userInfo({ username: initialState?.currentUser.username || n.username, info: vals, fileList: fileList[0] });
+            console.log(data, 'data...')
+            if (data.success === 'ok') {
+                message.success('提交成功');
+            } else {
+                message.success('提交失败');
+            }
+        }
     };
 
     const onFinishFailed = () => {
         message.error('Submit failed!');
     };
 
-    const onFill = () => {
-        form.setFieldsValue({
-            url: 'https://taobao.com/',
-        });
-    };
+    // const onFill = () => {
+    //     form.setFieldsValue({
+    //         url: 'https://taobao.com/',
+    //     });
+    // };
 
     // {
     //     uid: '-1',
@@ -33,13 +45,13 @@ const Personal = () => {
 
 
     const onChange = ({ fileList: newFileList }: { fileList: any }) => {
+        console.log(newFileList, 'newFileList')
         setFileList(newFileList);
     };
 
-    // 上传头像
+    // 预览图片 打开一个新的窗口
     const onPreview = async (file: any) => {
         let src = file.url;
-        console.log(src, 'src...')
         if (!src) {
             src = await new Promise(resolve => {
                 const reader = new FileReader();
@@ -47,10 +59,9 @@ const Personal = () => {
                 reader.onload = () => resolve(reader.result);
             });
         }
-        // const image = new Image();
-        // image.src = src;
-        // const imgWindow = window.open(src);
-        // imgWindow.document.write(image.outerHTML);
+        const image = new Image();
+        image.src = src;
+        window.open(image.src)?.document.write(image.outerHTML);
     };
 
     const formData = () => (
@@ -116,9 +127,9 @@ const Personal = () => {
                     <Button type="primary" htmlType="submit">
                         提交咯
                     </Button>
-                    <Button htmlType="button" onClick={onFill}>
+                    {/* <Button htmlType="button" onClick={onFill}>
                         Fill
-                    </Button>
+                    </Button> */}
                 </Space>
             </Form.Item>
         </>
