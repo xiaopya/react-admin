@@ -1,6 +1,6 @@
 const db = require('../utils/db');
 const { JWT } = require('../utils/jwt');
-const fs = require("fs");  // 引入fs模块
+// const fs = require("fs");  // 引入fs模块
 
 class userController {
     /**
@@ -8,9 +8,9 @@ class userController {
      */
     static async Login(ctx) {
         const { username, password } = ctx.request.body;
-        let sql = `select * from user where username='${username}'`;
+        let sql = `select * from user where username=(?)`;
         let data = await new Promise((rev, rej) => {
-            db.query(sql, (err, data) => {
+            db.query(sql, [username], (err, data) => {
                 if (err) rej(err);
                 rev(data);
             })
@@ -50,8 +50,8 @@ class userController {
     static async currentUser(ctx) {
         const { username } = ctx.request.body;
         const data = await new Promise((rev, reg) => {
-            let sql = `select * from userInfo where username='${username}'`
-            db.query(sql, (err, data) => {
+            let sql = `select * from userInfo where username=(?)`
+            db.query(sql, [username], (err, data) => {
                 if (err) rej(err);
                 rev(data);
             })
@@ -84,54 +84,55 @@ class userController {
         // fileList
         const { username, info } = ctx.request.body;
         const { name, email, area, saying, introduce } = info;
-        const sql = `select * from userInfo where username='${username}'`
+        const sql = `select * from userInfo where username=(?)`
         const data = await new Promise((rev, rej) => {
-            return db.query(sql, (err, data) => {
+            return db.query(sql, [username], (err, data) => {
                 if (err) rej(err);
                 rev(data);
             })
         })
-        console.log(username,'username...')
         // 有该用户的数据则去修改
         if (data.length) {
-            const sql = `update userInfo set name='${name}',email='${email}',area='${area}',saying='${saying}',introduce='${introduce}' where username='${username}' `
+            const sql = `update userInfo set name=(?),email=(?),area=(?),saying=(?),introduce=(?) where username=(?) `
             const data = await new Promise((rev, rej) => {
-                return db.query(sql, (err, data) => {
+                return db.query(sql, [name, email, area, saying, introduce, username], (err, data) => {
                     if (err) rej(err);
                     rev(data);
                 })
             })
             if (data) {
                 ctx.body = {
-                    msg: '提交成功',
+                    msg: '修改成功',
                     code: 200,
                     success: 'ok',
                 }
             } else {
                 ctx.body = {
-                    msg: '提交失败',
+                    msg: '修改失败',
                     code: 200,
                     success: 'error',
                 }
             }
         } else {
             // 如果没有向数据库插入该数据
-            const sql = `insert into userInfo (username,name,email,area,saying,introduce) values ('${username}','${name}','${email}','${area}','${saying}','${introduce}')`
+            // '${username}','${name}','${email}','${area}','${saying}','${introduce}'
+            const sql = `insert into userInfo (username,name,email,area,saying,introduce) values (?,?,?,?,?)`
             const data = await new Promise((rev, rej) => {
-                return db.query(sql, (err, data) => {
+                return db.query(sql, [username, name, email, area, saying, introduce], (err, data) => {
                     if (err) rej(err);
                     rev(data);
                 })
             })
+            console.log(data, 'data...')
             if (data) {
                 ctx.body = {
-                    msg: '提交成功',
+                    msg: '修改成功',
                     code: 200,
                     success: 'ok',
                 }
             } else {
                 ctx.body = {
-                    msg: '提交失败',
+                    msg: '修改失败',
                     code: 200,
                     success: 'error',
                 }
@@ -166,7 +167,6 @@ class userController {
         } else {
             ctx.body = {
                 msg: 'token 过期 请重新登录',
-                status: 401,
                 code: 200,
             }
             ctx.status = 401;

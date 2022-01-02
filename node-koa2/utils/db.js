@@ -10,15 +10,32 @@ const pool = mysql.createPool({
     password: "123456", // 用户密码
 })
 
+
 //对数据库进行增删改查操作的基础
-const query = (sql,callback) => {
-    pool.getConnection(function(err,connection){
-        connection.query(sql, function (err,rows) {
-            callback(err,rows)
-            connection.release()
-        })
-    })
+const query = function (sql, options, callback) {
+    pool.getConnection(function (err, conn) {
+        if (err) callback(err, null, null);
+        else {
+            conn.query(sql, options, function (err, results) {
+                //释放连接  
+                conn.release();
+                //事件驱动回调  
+                callback(err, results);
+            });
+        }
+    });
 }
+
+
+// //对数据库进行增删改查操作的基础
+// const query = (sql,callback) => {
+//     pool.getConnection(function(err,connection){
+//         connection.query(sql, function (err,rows) {
+//             callback(err,rows)
+//             connection.release()
+//         })
+//     })
+// }
 
 module.exports = {
     query
