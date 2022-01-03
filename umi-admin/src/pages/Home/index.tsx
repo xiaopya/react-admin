@@ -7,9 +7,9 @@ interface IAppProps { }
 
 const Banner_Parallax: React.FunctionComponent<IAppProps> = memo((props) => {
 
-  const { initialState: { currentUser: { saying } } } = useModel<any>('@@initialState');
+  const { initialState: { currentUser } } = useModel<any>('@@initialState');
 
-  const talk = useTypewriter(saying || 'Miànxiàng xīngkōng biānchéng🎉...');
+  const talk = useTypewriter(currentUser?.saying || 'Miànxiàng xīngkōng biānchéng🎉...');
 
   return (
     <div className={styles.wrap_css_doodle}>

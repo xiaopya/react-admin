@@ -1,7 +1,6 @@
 const Router = require('koa-router');
 const user = new Router();
 const { userController } = require('../controller/User');
-const fs = require("fs");  // 引入fs模块
 
 // user 根目录
 user.prefix('/user');
@@ -21,3 +20,32 @@ user.post('/checkToken', userController.checkToken);
 user.post('/userInfo', userController.userInfo);
 
 module.exports = user;
+
+
+// const db = require('../utils/db');
+// 建库
+// user.get('/createDbUser', () => {
+//     const sql = "create database admin_mm"
+//     db.query(sql,(err,data)=>{
+//         if(err) throw err;
+//         console.log("admin_mm 库创建成功");
+//     })
+// })
+
+// 建表
+// user.get('/createDbUserTable', () => {
+//     const sql = "create table user(id INT PRIMARY KEY AUTO_INCREMENT,username VARCHAR(30) COMMENT '用户名称',password VARCHAR(30) COMMENT '用户密码')";
+//     db.query(sql, (err, data) => {
+//         if (err) throw err;
+//         console.log("admin_mm 表创建成功");
+//     })
+// })
+
+// 建表
+// user.get('/createDbUserTable', () => {
+//     const sql = "create table user(id INT PRIMARY KEY AUTO_INCREMENT,username VARCHAR(30) COMMENT '用户名称',password VARCHAR(30) COMMENT '用户密码')";
+//     db.query(sql, (err, data) => {
+//         if (err) throw err;
+//         console.log("admin_mm 表创建成功");
+//     })
+// })

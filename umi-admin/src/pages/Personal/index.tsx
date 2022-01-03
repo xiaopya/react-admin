@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Button, Descriptions, Result, Avatar, Space, Form, Upload, Row, Col, Input, message, } from 'antd';
+import { Button, Descriptions, Card, Form, Upload, Row, Col, Input, message, } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import CreateModal from '@/utils/model'
 import { PageContainer } from '@ant-design/pro-layout';
 import { useModel } from '../../.umi/plugin-model/useModel';
 import { userInfo } from '@/services/api';
-
+import Process from './process'
 
 
 export default () => {
@@ -16,8 +16,9 @@ export default () => {
     const [visible, setVisible] = useState<boolean>(false); // 控制弹窗
     const [fileList, setFileList] = useState<never[]>([]); // 头像
 
+    // console.log(initialState?.currentUser,'initialState?.currentUser....')
+
     const onChange = ({ fileList: newFileList }: { fileList: any }) => {
-        console.log(newFileList, 'newFileList')
         setFileList(newFileList);
     };
 
@@ -45,7 +46,7 @@ export default () => {
             console.log(data, 'data...')
             if (data.success === 'ok') {
                 message.success('修改成功');
-                setInitialState((v: any) =>({ ...v, currentUser: { ...v.currentUser, ...vals, }}))
+                setInitialState((v: any) => ({ ...v, currentUser: { ...v.currentUser, ...vals, } }))
                 setInitial(vals)
             } else {
                 message.success('修改失败');
@@ -93,7 +94,6 @@ export default () => {
                 <Col span={4} offset={4}>
                     <ImgCrop rotate>
                         <Upload
-                            // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                             listType="picture-card"
                             fileList={fileList}
                             onChange={onChange}
@@ -156,17 +156,9 @@ export default () => {
                     <Button onClick={() => setVisible(true)}>编辑</Button>,
                 ]}
             >
-                <div>
-                    <Result
-                        status="404"
-                        style={{
-                            height: '100%',
-                            background: '#fff',
-                        }}
-                        title="Hello xiongdi"
-                        subTitle="暂时没东西放在这里"
-                    />
-                </div>
+                <Card>
+                    <Process />
+                </Card>
             </PageContainer>
             <CreateModal
                 visible={visible}

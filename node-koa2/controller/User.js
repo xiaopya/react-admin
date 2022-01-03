@@ -1,6 +1,6 @@
 const db = require('../utils/db');
 const { JWT } = require('../utils/jwt');
-// const fs = require("fs");  // 引入fs模块
+const fs = require("fs");  // 引入fs模块
 
 class userController {
     /**
@@ -82,7 +82,7 @@ class userController {
      */
     static async userInfo(ctx) {
         // fileList
-        const { username, info } = ctx.request.body;
+        const { username, info, fileList } = ctx.request.body;
         const { name, email, area, saying, introduce } = info;
         const sql = `select * from userInfo where username=(?)`
         const data = await new Promise((rev, rej) => {
@@ -138,21 +138,26 @@ class userController {
                 }
             }
         }
-
-        // 图片处理 目前没有处理
-        // console.log(info, fileList, 'data')
-        // const { thumbUrl,name } = fileList;
-        // //过滤data:URL
-        // const base64Data = thumbUrl.replace(/^data:image\/\w+;base64,/, "");
-        // const dataBuffer = Buffer.from(base64Data, 'base64');
-        // console.log(ctx.origin,'ctx.origin')
-        // fs.writeFile(`./public/images/${name}`, dataBuffer, function (err) {
-        //     if (err) {
-        //         console.log(err);
-        //     } else {
-        //         console.log(fileList,"保存成功!")
-        //     }
-        // });
+        
+        // 处理图片
+        if (fileList) {
+            // 图片处理 目前没有处理
+            //过滤data:URL
+            const base64Data = fileList.thumbUrl.replace(/^data:image\/\w+;base64,/, "");
+            const dataBuffer = Buffer.from(base64Data, 'base64');
+            fs.writeFile(`./public/images/${fileList.name}`, dataBuffer, function (err) {
+                if (err) throw err;
+                else {
+                    const sql = `update userInfo set avatar=(?) where username=(?)`
+                    db.query(sql,[`${ctx.origin}/images/${fileList.name}`,username],(err,data)=>{
+                        if(err) throw err;
+                        else{
+                            console.log(`${ctx.origin}/images/${fileList.name}`, "保存成功!")
+                        }
+                    })
+                }
+            });
+        }
     }
 
     static async checkToken(ctx, next) {
