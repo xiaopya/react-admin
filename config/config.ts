@@ -1,5 +1,5 @@
 import { defineConfig } from 'umi';
-import routes from './router'
+import routes from './router';
 import defaultSettings from './defaultSettings';
 
 export default defineConfig({
@@ -7,7 +7,10 @@ export default defineConfig({
     type: 'none',
   },
   layout: {
-    ...defaultSettings
+    ...defaultSettings,
+  },
+  dva: {
+    hmr: true,
   },
   routes,
   fastRefresh: {},

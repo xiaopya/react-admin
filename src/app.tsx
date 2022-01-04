@@ -3,11 +3,11 @@ import {
   Settings as LayoutSettings,
 } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
-import { history, useModel } from 'umi';
-import RightContent from '@/components/RightContent'
+import { history } from 'umi';
+import RightContent from '@/components/RightContent';
 import { currentUser as queryCurrentUser, checkToken } from './services/api';
 
-const loginPath = '/user/login'
+const loginPath = '/user/login';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -15,7 +15,6 @@ export const initialStateConfig = {
 };
 
 export async function getInitialState(): Promise<API.IUser> {
-
   const user_token: any = sessionStorage.getItem('All_token');
   const fetchUserInfo = async (users: string) => {
     try {
@@ -29,17 +28,17 @@ export async function getInitialState(): Promise<API.IUser> {
     return undefined;
   };
 
-  // 检验 token 是否过期 如果过期 让他 回到登陆页面 
+  // 检验 token 是否过期 如果过期 让他 回到登陆页面
   const vefToken = async () => {
     if (user_token) {
       const tokenInfo = JSON.parse(user_token);
       const msg = await checkToken(tokenInfo);
       if (msg.status === 401) {
-        sessionStorage.removeItem("All_token");
+        sessionStorage.removeItem('All_token');
         history.push('/user/login');
       }
     }
-  }
+  };
 
   // 如果是登录页面，不执行
   if (history.location.pathname !== loginPath && user_token !== null) {
@@ -58,7 +57,9 @@ export async function getInitialState(): Promise<API.IUser> {
   };
 }
 
-export const layout = ({ initialState, }: {
+export const layout = ({
+  initialState,
+}: {
   initialState: { settings?: LayoutSettings; currentUser?: {} };
 }): BasicLayoutProps => {
   return {
