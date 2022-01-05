@@ -16,19 +16,19 @@ const CreateModal = ({
   okButtonProps,
   onRef,
 }: {
-    visible?: any;
-    onCreate?: any;
-    onCancel?: any;
-    modalContent?: any;
-    title?: any;
-    initialValue?: any;
-    textId?: any;
-    okText?: any;
-    footer?: any;
-    width?: any;
-    flag?: any;
-    okButtonProps?: any;
-    onRef?: any;
+  visible?: boolean;
+  onCreate?: any;
+  onCancel?: any;
+  modalContent?: any;
+  title?: string;
+  initialValue?: any;
+  textId?: any;
+  okText?: any;
+  footer?: any;
+  width?: any;
+  flag?: any;
+  okButtonProps?: any;
+  onRef?: any;
 }) => {
   const [form] = Form.useForm();
   useEffect(() => {
@@ -75,8 +75,8 @@ const CreateModal = ({
               });
           }}
         >
-            {/* {...formItemLayout} */}
-          <Form form={form} name="form_in_modal" >
+          {/* {...formItemLayout} */}
+          <Form form={form} name="form_in_modal">
             {modalContent}
           </Form>
         </Modal>

@@ -1,16 +1,17 @@
 import React, { useCallback } from 'react';
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import {
+  LogoutOutlined,
+  SettingOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { Avatar, Menu, Spin, message } from 'antd';
 import { history, useModel } from 'umi';
-import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './style.less';
 import { outLogin } from '@/services/api';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 
-export type GlobalHeaderRightProps = {
-  menu?: boolean;
-};
+export type GlobalHeaderRightProps = {};
 
 /**
  * 退出登录，并且将当前的 url 保存
@@ -24,19 +25,27 @@ const loginOut = async () => {
   }
 };
 
-const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
-  const { initialState, setInitialState } = useModel('@@initialState');
-
+const AvatarDropdown: React.FC<GlobalHeaderRightProps> = () => {
+  const { initialState, setInitialState } = useModel<any>('@@initialState');
   const onMenuClick = useCallback(
     (event: MenuInfo) => {
       const { key } = event;
       // 退出登录
       if (key === 'logout') {
-        setInitialState((s: {}) => ({ ...s, currentUser: undefined }));
+        setInitialState((s: any) => ({ ...s, currentUser: undefined }));
         // 移出本地存放的 当前用户数据
         sessionStorage.removeItem('All_token');
         loginOut();
         return;
+      }
+      if (key === 'settings') {
+        history.replace({
+          pathname: '/management/personal',
+        });
+        return;
+      }
+      if (key === 'center') {
+        message.success('还没写');
       }
     },
     [setInitialState],
@@ -66,20 +75,15 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
 
   const menuHeaderDropdown = (
     <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-      {menu && (
-        <Menu.Item key="center">
-          <UserOutlined />
-          个人中心
-        </Menu.Item>
-      )}
-      {menu && (
-        <Menu.Item key="settings">
-          <SettingOutlined />
-          个人设置
-        </Menu.Item>
-      )}
-      {menu && <Menu.Divider />}
-
+      <Menu.Item key="center">
+        <UserOutlined />
+        个人中心
+      </Menu.Item>
+      <Menu.Item key="settings">
+        <SettingOutlined />
+        个人资料
+      </Menu.Item>
+      <Menu.Divider />
       <Menu.Item key="logout">
         <LogoutOutlined />
         退出登录
@@ -89,7 +93,12 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
+        <Avatar
+          size="small"
+          className={styles.avatar}
+          src={currentUser.avatar}
+          alt="avatar"
+        />
         <span className={`${styles.name} anticon`}>{currentUser.name}</span>
       </span>
     </HeaderDropdown>

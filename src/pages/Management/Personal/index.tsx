@@ -12,14 +12,13 @@ import {
 import ImgCrop from 'antd-img-crop';
 import CreateModal from '@/utils/model';
 import { PageContainer } from '@ant-design/pro-layout';
-import { useModel } from '../../.umi/plugin-model/useModel';
 import Process from './process';
-import { connect } from 'umi';
+import { connect, useModel } from 'umi';
 
 const Personal = ({ dispatch }: { dispatch: any }) => {
   const { initialState, setInitialState } = useModel<any>('@@initialState');
   const [initial, setInitial] = useState<any>(initialState.currentUser); // 控制弹窗
-  const name = sessionStorage.getItem('All_token');
+  const name: string | null = sessionStorage.getItem('All_token');
   const [visible, setVisible] = useState<boolean>(false); // 控制弹窗
   const [fileList, setFileList] = useState<never[]>([]); // 头像
 
