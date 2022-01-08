@@ -20,6 +20,10 @@ export default [
     ],
   },
   {
+    path: '/',
+    redirect: '/home',
+  },
+  {
     name: '首页',
     path: '/home',
     component: '@/pages/Home',
@@ -28,8 +32,12 @@ export default [
   {
     name: '文章管理',
     path: '/article',
-    component: '@/pages/Article',
+    component: '@/pages/Article/articleTableList',
     icon: 'SnippetsOutlined',
+  },
+  {
+    path: '/article/edittable',
+    component: '@/pages/Article/editTable',
   },
   {
     name: '用户管理',
@@ -42,10 +50,7 @@ export default [
       },
     ],
   },
-  {
-    path: '/',
-    redirect: '/home',
-  },
+
   {
     component: '@/pages/Access_Error/404',
   },
