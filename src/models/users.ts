@@ -1,9 +1,15 @@
 import { history } from 'umi';
 import { login, userInfo } from '@/services/api';
 import { message } from 'antd';
-import { USER } from './api';
+import { APIModel } from './api';
+import { setToken } from '@/utils/localToken';
 
-const UsersModel: USER.UsersModelType = {
+export interface UsersModelState {
+  all_token?: {};
+  userInfo?: {};
+}
+
+const UsersModel: APIModel.DvaModel<UsersModelState> = {
   namespace: 'users',
 
   state: {
@@ -20,7 +26,10 @@ const UsersModel: USER.UsersModelType = {
       const data = yield call(login, values);
       if (data.status === 'ok') {
         message.success('登录成功');
-        sessionStorage.setItem('All_token', JSON.stringify(data.data));
+        // 存储token
+        yield setToken(data.data.token);
+        // 存储用户名
+        sessionStorage.setItem('user_name', data.data.username);
         const userInfo = yield initialState?.fetchUserInfo?.(
           data.data.username,
         );
@@ -45,7 +54,6 @@ const UsersModel: USER.UsersModelType = {
       const data = yield call(userInfo, info);
       if (data?.success === 'ok') {
         message.success('修改成功');
-        console.log(info, 'info....');
         setInitialState((v: { currentUser: {} }) => ({
           ...v,
           currentUser: { ...v.currentUser, ...info.info },

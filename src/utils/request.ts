@@ -1,7 +1,7 @@
 import { extend } from 'umi-request';
 import { notification } from 'antd';
 
-const codeMessage = {
+const codeMessage: any = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
   202: '一个请求已经进入后台排队（异步任务）。',
@@ -63,13 +63,14 @@ const request = extend({
 //   }
 // });
 
-// response拦截器, 处理response
-request.interceptors.response.use((response, options) => {
-  let token = response.headers.get('x-auth-token');
-  if (token) {
-    localStorage.setItem('x-auth-token', token);
-  }
-  return response;
-});
+// // response拦截器, 处理response
+// request.interceptors.response.use((response, options) => {
+//   console.log(response, 'response...')
+//   let token = response.headers.get('x-auth-token');
+//   if (token) {
+//     localStorage.setItem('x-auth-token', token);
+//   }
+//   return response;
+// });
 
 export default request;

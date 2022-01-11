@@ -1,21 +1,19 @@
-import { Effect, Reducer } from 'umi';
+import { Effect, Reducer, Subscription } from 'umi';
 
-declare namespace USER {
-  interface UsersModelState {
-    all_token?: {};
-    userInfo?: {};
+declare namespace APIModel {
+  interface EffectModel {
+    [key: string]: Effect;
   }
 
-  interface UsersModelType {
-    namespace: 'users';
-    state: UsersModelState;
-    effects: {
-      logins: Effect;
-      userInfos: Effect;
-    };
-    reducers: {
-      loginvals: Reducer<UsersModelState>;
-      userInfovals: Reducer<UsersModelState>;
-    };
+  interface ReducerModel<T> {
+    [key: string]: Reducer<T>;
+  }
+
+  interface DvaModel<T> {
+    namespace: string;
+    state?: T;
+    effects?: EffectModel;
+    reducers?: ReducerModel<T>;
+    subscriptions?: Subscription;
   }
 }

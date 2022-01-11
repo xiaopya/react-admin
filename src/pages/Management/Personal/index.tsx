@@ -18,7 +18,7 @@ import { connect, useModel } from 'umi';
 const Personal = ({ dispatch }: { dispatch: any }) => {
   const { initialState, setInitialState } = useModel<any>('@@initialState');
   const [initial, setInitial] = useState<any>(initialState.currentUser); // 控制弹窗
-  const name: string | null = sessionStorage.getItem('All_token');
+  const name = sessionStorage.getItem('user_name');
   const [visible, setVisible] = useState<boolean>(false); // 控制弹窗
   const [fileList, setFileList] = useState<never[]>([]); // 头像
 
@@ -45,12 +45,11 @@ const Personal = ({ dispatch }: { dispatch: any }) => {
   const onCreate = async (vals: { name: string }) => {
     console.log(vals);
     if (name) {
-      const n = JSON.parse(name);
       dispatch({
         type: 'users/userInfos',
         payload: {
           info: {
-            username: initialState?.currentUser.username || n.username,
+            username: initialState?.currentUser.username || name,
             info: vals,
             fileList: fileList[0],
           },

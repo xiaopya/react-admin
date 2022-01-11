@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import request from '@/utils/request';
 
 /** 获取当前的用户 GET /api/user/currentUser */
 export async function currentUser(body: string) {
@@ -10,9 +10,9 @@ export async function currentUser(body: string) {
   });
 }
 
-/** 
-* 退出登录接口 POST /api/user/outLogin  
-*/
+/**
+ * 退出登录接口 POST /api/user/outLogin
+ */
 export async function outLogin() {
   return request('/api/user/outLogin', {
     method: 'GET',
@@ -30,21 +30,20 @@ export async function login(body: string) {
   });
 }
 
-/** 
+/**
  * 检验token POST /api/user/checkToken
  * */
-export async function checkToken(body: { token: string, }) {
+export async function checkToken(body: string) {
   return request('/api/user/checkToken', {
     method: 'POST',
     headers: {
-      'authorization': body.token,
+      authorization: body,
       'Content-Type': 'application/json',
     },
   });
 }
 
-
-/** 
+/**
  * 检验token POST /api/user/checkToken
  * */
 export async function userInfo(body: any) {
