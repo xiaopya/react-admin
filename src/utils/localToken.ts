@@ -30,16 +30,3 @@ export const removeToken = async (): Promise<boolean> => {
     return false;
   }
 };
-
-/**
- * 清空 数据库 和 本地存储
- */
-export const clear = async (): Promise<boolean> => {
-  try {
-    await localforage.clear();
-    await sessionStorage.removeItem('user_name');
-    return true;
-  } catch (error) {
-    return false;
-  }
-};

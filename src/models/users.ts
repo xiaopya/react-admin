@@ -1,12 +1,13 @@
 import { history } from 'umi';
 import { login, userInfo } from '@/services/api';
-import { message } from 'antd';
+import { message, Avatar } from 'antd';
 import { APIModel } from './api';
 import { setToken } from '@/utils/localToken';
 
 export interface UsersModelState {
   all_token?: {};
   userInfo?: {};
+  avatar?: string;
 }
 
 const UsersModel: APIModel.DvaModel<UsersModelState> = {
@@ -15,6 +16,7 @@ const UsersModel: APIModel.DvaModel<UsersModelState> = {
   state: {
     all_token: {},
     userInfo: {},
+    avatar: '',
   },
 
   effects: {
@@ -71,12 +73,13 @@ const UsersModel: APIModel.DvaModel<UsersModelState> = {
   reducers: {
     loginvals(state, { payload }) {
       return {
+        ...state,
         all_token: payload,
       };
     },
     userInfovals(state, { payload }) {
-      // console.log(state, payload, 'state...')
       return {
+        ...state,
         userInfo: payload,
       };
     },

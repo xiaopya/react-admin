@@ -8,20 +8,34 @@ import {
   Row,
   Col,
   Input,
+  Avatar,
 } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import CreateModal from '@/utils/model';
 import { PageContainer } from '@ant-design/pro-layout';
 import Process from './process';
 import { connect, useModel } from 'umi';
+import styles from '../style.less';
 
-const Personal = ({ dispatch }: { dispatch: any }) => {
+const Personal = ({ dispatch, users }: { dispatch: any; users: any }) => {
   const { initialState, setInitialState } = useModel<any>('@@initialState');
   const [initial, setInitial] = useState<any>(initialState.currentUser); // 控制弹窗
+  const [bool, setBool] = useState<boolean>(true);
   const name = sessionStorage.getItem('user_name');
   const [visible, setVisible] = useState<boolean>(false); // 控制弹窗
   const [fileList, setFileList] = useState<never[]>([]); // 头像
+  console.log(users.userInfo.data, 'user....');
 
+  if (users.userInfo.data && bool) {
+    const d = users.userInfo.data;
+    setInitialState((v: any) => ({
+      ...v,
+      currentUser: { ...v.currentUser, ...d },
+    }));
+    setBool((b) => !b);
+  }
+
+  console.log(initialState, 'initialState.....');
   const onChange = ({ fileList: newFileList }: { fileList: any }) => {
     setFileList(newFileList);
   };
@@ -43,7 +57,6 @@ const Personal = ({ dispatch }: { dispatch: any }) => {
 
   // 确定
   const onCreate = async (vals: { name: string }) => {
-    console.log(vals);
     if (name) {
       dispatch({
         type: 'users/userInfos',
@@ -67,15 +80,17 @@ const Personal = ({ dispatch }: { dispatch: any }) => {
   };
 
   const content = (
-    <Descriptions size="small" column={2}>
+    <>
       <Descriptions.Item label="名称">{initial?.name}</Descriptions.Item>
       <Descriptions.Item label="邮箱">
         <a>{initial?.email}</a>
       </Descriptions.Item>
       <Descriptions.Item label="工作地区">{initial?.area}</Descriptions.Item>
       <Descriptions.Item label="名言警句">{initial?.saying}</Descriptions.Item>
-      <Descriptions.Item label="个人介绍">{initial?.saying}</Descriptions.Item>
-    </Descriptions>
+      <Descriptions.Item label="个人介绍">
+        {initial?.introduce}
+      </Descriptions.Item>
+    </>
   );
 
   const modalContent = (
@@ -132,30 +147,30 @@ const Personal = ({ dispatch }: { dispatch: any }) => {
 
   return (
     <>
-      <PageContainer
-        content={content}
-        //   tabList={[
-        //     {
-        //       tab: '基本信息',
-        //       key: 'base',
-        //     },
-        //     {
-        //       tab: '详细信息',
-        //       key: 'info',
-        //     },
-        //   ]}
-        // extraContent={
-        //     <Space size={24}>
-        //         <Statistic title="Feedback" value={1128} prefix={<LikeOutlined />} />
-        //         <Statistic title="Unmerged" value={93} suffix="/ 100" />
-        //     </Space>
-        // }
-        extra={[<Button onClick={() => setVisible(true)}>编辑</Button>]}
-      >
-        <Card>
-          <Process />
+      <div className={styles.card_avatar}>
+        <Card hoverable>
+          <Avatar
+            draggable
+            alt="暂无图片或加载资源出错"
+            src={initialState.currentUser?.avatar}
+            size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
+          />
         </Card>
-      </PageContainer>
+      </div>
+      <div className={styles.card_avatar}>
+        <Card>
+          <Descriptions
+            title="个人资料"
+            extra={
+              <Button onClick={() => setVisible(true)} type="primary">
+                Edit
+              </Button>
+            }
+          >
+            {content}
+          </Descriptions>
+        </Card>
+      </div>
       <CreateModal
         visible={visible}
         onCreate={onCreate}

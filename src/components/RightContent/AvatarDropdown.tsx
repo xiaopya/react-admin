@@ -10,7 +10,6 @@ import HeaderDropdown from '../HeaderDropdown';
 import styles from './style.less';
 import { outLogin } from '@/services/api';
 import type { MenuInfo } from 'rc-menu/lib/interface';
-import { clear } from '@/utils/localToken';
 
 export type GlobalHeaderRightProps = {};
 
@@ -35,7 +34,6 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = () => {
       if (key === 'logout') {
         setInitialState((s: any) => ({ ...s, currentUser: undefined }));
         // 移出本地存放的 当前用户数据
-        await clear();
         loginOut();
         return;
       }

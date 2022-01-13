@@ -6,7 +6,7 @@ import { PageLoading } from '@ant-design/pro-layout';
 import { history } from 'umi';
 import RightContent from '@/components/RightContent';
 import { currentUser as queryCurrentUser, checkToken } from './services/api';
-import { getToken, removeToken, clear } from '@/utils/localToken';
+import { getToken, removeToken } from '@/utils/localToken';
 
 const loginPath = '/user/login';
 
@@ -38,12 +38,10 @@ export async function getInitialState(): Promise<API.IUser> {
       if (msg.status === 401) {
         // 移出token 并跳回登陆页面
         await removeToken();
-        await clear();
         history.push('/user/login');
       }
     } else {
-      // token 都不存在的情况下 跳回登陆页面 并清除离线仓库中的所有值
-      await clear();
+      // token 都不存在的情况下 跳回登陆页面
       history.push('/user/login');
     }
   };
